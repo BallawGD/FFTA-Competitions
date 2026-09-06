@@ -1,7 +1,16 @@
 import re
 import json
 import requests
+from pathlib import Path
 from bs4 import BeautifulSoup
+
+
+# ==========================================
+# CHEMINS
+# ==========================================
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+DATA_DIR = BASE_DIR / "data"
 
 
 def scrape_competition(competition_id):
@@ -283,7 +292,7 @@ def scrape_competition(competition_id):
 # CRAWLER
 # ==========================================
 
-start_id = 25201
+start_id = 24000
 
 # Nombre maximum d'IDs inexistantes consécutivement
 max_consecutive_missing = 100
@@ -368,7 +377,7 @@ while consecutive_missing < max_consecutive_missing:
 # ==========================================
 
 with open(
-    "data/competitions.json",
+    DATA_DIR / "competitions.json",
     "w",
     encoding="utf-8"
 ) as file:
@@ -417,5 +426,5 @@ print(
 )
 
 print(
-    "JSON créé dans data/competitions.json"
+    f"JSON créé dans {DATA_DIR / 'competitions.json'}"
 )

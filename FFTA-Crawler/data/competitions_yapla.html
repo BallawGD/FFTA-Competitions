@@ -1,9 +1,8 @@
+
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
 <link crossorigin="" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" rel="stylesheet" />
 
 <div class="filtres-competitions-wrapper">
-
-<!-- FILTRES -->
 
 <div class="filtres-wrapper">
 <div class="filtres-container">
@@ -22,26 +21,66 @@
 </div>
 
 <div class="filtre distance-filtre">
+
 <label>
 Distance max :
-<span id="distanceValue">250</span> km
+<span id="distanceValue">Indre-et-Loire</span>
 </label>
 
-<input id="distanceRange" max="250" min="0" type="range" value="250" />
+<input
+id="distanceRange"
+max="36"
+min="0"
+step="1"
+type="range"
+value="0"
+/>
+
+</div>
+
+<div class="filtre date-filtre">
+
+<label for="dateDebut">
+Du :
+</label>
+
+<input
+id="dateDebut"
+type="date"
+/>
+
+</div>
+
+<div class="filtre date-filtre">
+
+<label for="dateFin">
+Au :
+</label>
+
+<input
+id="dateFin"
+type="date"
+/>
+
+</div>
+
+<div class="filtre reset-filtre">
+
+<button
+id="resetDates"
+type="button"
+>
+Réinitialiser
+</button>
+
 </div>
 
 </div>
 </div>
-
-
-<!-- CARTE -->
 
 <div id="map" style="height:500px; width:100%; margin:30px auto;">
 &nbsp;
 </div>
-
-
-<!-- LISTE DES COMPETITIONS -->
 
 <div class="competitions-wrapper">
 <div class="competitions-grid">
@@ -51,10 +90,7 @@ Distance max :
 
 </div>
 
-
 <style type="text/css">
-
-/* ==================== FILTRES ==================== */
 
 .filtres-wrapper {
   width:100%;
@@ -66,8 +102,10 @@ Distance max :
 
 .filtres-container {
   display:flex;
-  gap:30px;
-  align-items:center;
+  gap:20px;
+  align-items:end;
+  flex-wrap:wrap;
+  justify-content:center;
 }
 
 .filtre {
@@ -101,6 +139,12 @@ Distance max :
   margin-top:0px;
 }
 
+.distance-filtre label {
+  color:#333870;
+  font-weight:bold;
+  margin-bottom:5px;
+}
+
 input[type=range]::-webkit-slider-thumb {
   -webkit-appearance:none;
   width:18px;
@@ -110,13 +154,42 @@ input[type=range]::-webkit-slider-thumb {
   cursor:pointer;
 }
 
-.distance-filtre label {
+.date-filtre label {
   color:#333870;
   font-weight:bold;
+  margin-bottom:5px;
 }
 
+.date-filtre input {
+  width:170px;
+  height:42px;
+  padding:0 10px;
+  font-size:16px;
+  border:2px solid #333870;
+  border-radius:6px;
+  color:#333870;
+  background-color:white;
+  font-family:'Roboto',sans-serif;
+  box-sizing:border-box;
+}
 
-/* ==================== COMPETITIONS ==================== */
+.reset-filtre button {
+  height:42px;
+  padding:0 15px;
+  border:2px solid #333870;
+  border-radius:6px;
+  background:white;
+  color:#333870;
+  font-family:'Roboto',sans-serif;
+  font-size:15px;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.reset-filtre button:hover {
+  background:#333870;
+  color:white;
+}
 
 .competitions-wrapper {
   width:100%;
@@ -163,9 +236,6 @@ input[type=range]::-webkit-slider-thumb {
   color:#333870;
 }
 
-
-/* ==================== BOUTON FFTA ==================== */
-
 .ffta-button {
   display:inline-block;
   margin-top:14px;
@@ -182,9 +252,6 @@ input[type=range]::-webkit-slider-thumb {
 .ffta-button:hover {
   opacity:0.8;
 }
-
-
-/* ==================== COULEURS ==================== */
 
 .competition-card.type-TAE {
   border-color:#333870;
@@ -214,7 +281,6 @@ input[type=range]::-webkit-slider-thumb {
   border-color:#800080;
 }
 
-
 .type.type-TAE {
   color:#333870;
 }
@@ -243,9 +309,6 @@ input[type=range]::-webkit-slider-thumb {
   color:#800080;
 }
 
-
-/* ==================== RESPONSIVE MOBILE ==================== */
-
 @media (max-width:768px) {
 
   .filtres-container {
@@ -267,36 +330,178 @@ input[type=range]::-webkit-slider-thumb {
 
 </style>
 
-
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
 
 <script>
 
-document.addEventListener("DOMContentLoaded", function() {
-
-  // ==================== CHARGEMENT DES DONNÉES ====================
+document.addEventListener("DOMContentLoaded", function(){
 
   fetch("https://ballawgd.github.io/FFTA-Competitions/competitions.json")
+
     .then(response => {
 
       if(!response.ok) {
+
         throw new Error(
           "Erreur HTTP " + response.status
         );
+
       }
 
       return response.json();
 
     })
+
     .then(competitions => {
 
-      // ==================== DECALAGE DES POINTS IDENTIQUES ====================
+
+      // ==========================================
+      // CONVERSION DES DATES
+      // ==========================================
+
+      function convertirDate(dateString) {
+
+        if(!dateString) {
+          return null;
+        }
+
+        const morceaux =
+          dateString.split("-");
+
+        if(morceaux.length !== 3) {
+          return null;
+        }
+
+        const annee =
+          Number(morceaux[0]);
+
+        const mois =
+          Number(morceaux[1]) - 1;
+
+        const jour =
+          Number(morceaux[2]);
+
+        if(
+          !Number.isInteger(annee) ||
+          !Number.isInteger(mois) ||
+          !Number.isInteger(jour)
+        ) {
+
+          return null;
+
+        }
+
+        const resultat =
+          new Date(
+            annee,
+            mois,
+            jour
+          );
+
+        if(
+          isNaN(resultat.getTime())
+        ) {
+
+          return null;
+
+        }
+
+        return resultat;
+
+      }
+
+
+      // ==========================================
+      // DATE DU JOUR
+      // ==========================================
+
+      const aujourdHui =
+        new Date();
+
+      aujourdHui.setHours(
+        0,
+        0,
+        0,
+        0
+      );
+
+
+      // ==========================================
+      // SUPPRESSION DES COMPÉTITIONS TERMINÉES
+      // ==========================================
+
+      competitions =
+        competitions.filter(
+          comp => {
+
+            const dateFin =
+              convertirDate(
+                comp.date_fin
+              );
+
+            if(!dateFin) {
+
+              return true;
+
+            }
+
+            return dateFin >= aujourdHui;
+
+          }
+        );
+
+
+      // ==========================================
+      // TRI CHRONOLOGIQUE
+      // ==========================================
+
+      competitions.sort(
+        (a,b) => {
+
+          const dateA =
+            convertirDate(
+              a.date_debut
+            );
+
+          const dateB =
+            convertirDate(
+              b.date_debut
+            );
+
+          if(!dateA && !dateB) {
+
+            return 0;
+
+          }
+
+          if(!dateA) {
+
+            return 1;
+
+          }
+
+          if(!dateB) {
+
+            return -1;
+
+          }
+
+          return dateA - dateB;
+
+        }
+      );
+
+
+      // ==========================================
+      // GESTION DES POSITIONS IDENTIQUES
+      // ==========================================
 
       const locationCounts = {};
 
       competitions.forEach(comp => {
 
-        const key = comp.lat + "," + comp.lng;
+        const key =
+          comp.lat + "," + comp.lng;
 
         if(!locationCounts[key]) {
 
@@ -305,7 +510,8 @@ document.addEventListener("DOMContentLoaded", function() {
         } else {
 
           const offset =
-            0.0025 * locationCounts[key];
+            0.0025 *
+            locationCounts[key];
 
           const angle =
             locationCounts[key] *
@@ -328,7 +534,9 @@ document.addEventListener("DOMContentLoaded", function() {
       });
 
 
-      // ==================== CARTE ====================
+      // ==========================================
+      // CARTE
+      // ==========================================
 
       const map =
         L.map('map').setView(
@@ -347,7 +555,9 @@ document.addEventListener("DOMContentLoaded", function() {
       ).addTo(map);
 
 
-      // ==================== COULEURS ====================
+      // ==========================================
+      // COULEURS DES DISCIPLINES
+      // ==========================================
 
       const typeColors = {
 
@@ -362,154 +572,167 @@ document.addEventListener("DOMContentLoaded", function() {
       };
 
 
+      // ==========================================
+      // MARQUEURS
+      // ==========================================
+
       const markers = [];
 
 
-      // ==================== MARKERS ====================
+      competitions.forEach(
+        (comp,index)=>{
 
-      competitions.forEach((comp,index)=>{
+          const marker =
+            L.circleMarker(
+              [comp.lat,comp.lng],
+              {
 
-        const marker =
-          L.circleMarker(
-            [comp.lat,comp.lng],
-            {
+                radius:8,
 
-              radius:8,
+                fillColor:
+                  typeColors[comp.type] ||
+                  "gray",
 
-              fillColor:
-                typeColors[comp.type] ||
-                "gray",
+                color:"#fff",
 
-              color:"#fff",
+                weight:1,
 
-              weight:1,
+                opacity:1,
 
-              opacity:1,
+                fillOpacity:0.9
 
-              fillOpacity:0.9
+              }
+            ).addTo(map);
+
+
+          marker.bindPopup(`
+
+            <div style="text-align:center; font-family:Roboto,sans-serif;">
+
+              <strong style="color:#333870;">
+                ${comp.nom}
+              </strong>
+
+              <br>
+
+              <span>
+                ${comp.type} - ${comp.dates}
+              </span>
+
+              <br>
+
+              <a
+                href="${comp.lien}"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="ffta-button"
+              >
+                Fiche FFTA
+              </a>
+
+            </div>
+
+          `);
+
+
+          marker.competitionIndex =
+            index;
+
+
+          marker.on(
+            "mouseover",
+            () => {
+
+              marker.openPopup();
+
+              const color =
+                marker.options.fillColor ||
+                "gray";
+
+              const popupEl =
+                marker.getPopup().getElement();
+
+
+              if(popupEl){
+
+                popupEl.style.border =
+                  `3px solid ${color}`;
+
+                popupEl.style.borderRadius =
+                  "15px";
+
+
+                const content =
+                  popupEl.querySelector(
+                    ".leaflet-popup-content"
+                  );
+
+
+                if(content){
+
+                  content.style.fontFamily =
+                    "Roboto, sans-serif";
+
+                  content.style.fontSize =
+                    "12px";
+
+                  content.style.fontWeight =
+                    "500";
+
+                  content.style.color =
+                    "#333870";
+
+                }
+
+              }
 
             }
-          ).addTo(map);
+          );
 
 
-        // ==================== POPUP ====================
+          marker.on(
+            "mouseout",
+            () => {
 
-        marker.bindPopup(`
-
-          <div style="text-align:center; font-family:Roboto,sans-serif;">
-
-            <strong style="color:#333870;">
-              ${comp.nom}
-            </strong>
-
-            <br>
-
-            <span>
-              ${comp.type} - ${comp.dates}
-            </span>
-
-            <br>
-
-            <a
-              href="${comp.lien}"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="ffta-button"
-            >
-              Fiche FFTA
-            </a>
-
-          </div>
-
-        `);
-
-
-        marker.competitionIndex = index;
-
-
-        // ==================== SURVOL ====================
-
-        marker.on("mouseover", () => {
-
-          marker.openPopup();
-
-          const color =
-            marker.options.fillColor ||
-            "gray";
-
-          const popupEl =
-            marker.getPopup().getElement();
-
-          if(popupEl){
-
-            popupEl.style.border =
-              `3px solid ${color}`;
-
-            popupEl.style.borderRadius =
-              "15px";
-
-
-            const content =
-              popupEl.querySelector(
-                ".leaflet-popup-content"
-              );
-
-            if(content){
-
-              content.style.fontFamily =
-                "Roboto, sans-serif";
-
-              content.style.fontSize =
-                "12px";
-
-              content.style.fontWeight =
-                "500";
-
-              content.style.color =
-                "#333870";
+              marker.closePopup();
 
             }
-
-          }
-
-        });
+          );
 
 
-        // ==================== SORTIE DU POINT ====================
+          marker.on(
+            "click",
+            () => {
 
-        marker.on("mouseout", () => {
-
-          marker.closePopup();
-
-        });
-
-
-        // ==================== CLIC SUR LE POINT ====================
-
-        marker.on("click", () => {
-
-          const card =
-            document.querySelectorAll(
-              ".competition-card"
-            )[marker.competitionIndex];
-
-          if(card) {
-
-            card.scrollIntoView({
-              behavior:"smooth"
-            });
-
-          }
-
-        });
+              const card =
+                document.querySelectorAll(
+                  ".competition-card"
+                )[marker.competitionIndex];
 
 
-        markers.push(marker);
+              if(card) {
 
-      });
+                card.scrollIntoView({
+                  behavior:"smooth"
+                });
+
+              }
+
+            }
+          );
 
 
-      // ==================== GENERATION DES CARDS ====================
+          markers.push(
+            marker
+          );
+
+        }
+      );
+
+
+      // ==========================================
+      // CRÉATION DES CARTES
+      // ==========================================
 
       const grid =
         document.querySelector(
@@ -517,83 +740,115 @@ document.addEventListener("DOMContentLoaded", function() {
         );
 
 
-      competitions.forEach(comp=>{
+      competitions.forEach(
+        comp=>{
 
-        const card =
-          document.createElement("div");
-
-
-        card.className =
-          `competition-card type-${comp.type}`;
-
-
-        card.dataset.discipline =
-          comp.type;
+          const card =
+            document.createElement(
+              "div"
+            );
 
 
-        card.dataset.distance =
-          comp.distance;
+          card.className =
+            `competition-card type-${comp.type}`;
 
 
-        let displayType =
-          comp.type;
+          card.dataset.discipline =
+            comp.type;
 
 
-        if(comp.type==="Beursault") {
+          card.dataset.distance =
+            comp.distance;
 
-          displayType = "B";
 
-        } else if(comp.type==="Campagne") {
+          card.dataset.codePostal =
+            comp.code_postal || "";
 
-          displayType = "C";
 
-        } else if(comp.type==="18m") {
+          card.dataset.dateDebut =
+            comp.date_debut;
 
-          displayType = "18m";
 
-        } else if(comp.type==="Loisir") {
+          card.dataset.dateFin =
+            comp.date_fin;
 
-          displayType = "Loisir";
+
+          let displayType =
+            comp.type;
+
+
+          if(
+            comp.type === "Beursault"
+          ) {
+
+            displayType =
+              "B";
+
+          } else if(
+            comp.type === "Campagne"
+          ) {
+
+            displayType =
+              "C";
+
+          } else if(
+            comp.type === "18m"
+          ) {
+
+            displayType =
+              "18m";
+
+          } else if(
+            comp.type === "Loisir"
+          ) {
+
+            displayType =
+              "Loisir";
+
+          }
+
+
+          card.innerHTML = `
+
+            <h3 class="competition-title">
+              ${comp.nom}
+            </h3>
+
+            <span class="type type-${comp.type}">
+              ${displayType}
+            </span>
+
+            <div class="distance">
+              ${comp.distance} km
+            </div>
+
+            <div class="dates">
+              ${comp.dates}
+            </div>
+
+            <a
+              href="${comp.lien}"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="ffta-button"
+            >
+              Voir la fiche FFTA
+            </a>
+
+          `;
+
+
+          grid.appendChild(
+            card
+          );
 
         }
+      );
 
 
-        card.innerHTML = `
-
-          <h3 class="competition-title">
-            ${comp.nom}
-          </h3>
-
-          <span class="type type-${comp.type}">
-            ${displayType}
-          </span>
-
-          <div class="distance">
-            ${comp.distance} km
-          </div>
-
-          <div class="dates">
-            ${comp.dates}
-          </div>
-
-          <a
-            href="${comp.lien}"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="ffta-button"
-          >
-            Voir la fiche FFTA
-          </a>
-
-        `;
-
-
-        grid.appendChild(card);
-
-      });
-
-
-      // ==================== FILTRAGE ====================
+      // ==========================================
+      // FILTRES
+      // ==========================================
 
       const selectDiscipline =
         document.getElementById(
@@ -613,11 +868,33 @@ document.addEventListener("DOMContentLoaded", function() {
         );
 
 
+      const dateDebutInput =
+        document.getElementById(
+          "dateDebut"
+        );
+
+
+      const dateFinInput =
+        document.getElementById(
+          "dateFin"
+        );
+
+
+      const resetDates =
+        document.getElementById(
+          "resetDates"
+        );
+
+
       const cards =
         document.querySelectorAll(
           ".competition-card"
         );
 
+
+      // ==========================================
+      // FILTRAGE
+      // ==========================================
 
       function filterCards() {
 
@@ -625,66 +902,233 @@ document.addEventListener("DOMContentLoaded", function() {
           selectDiscipline.value;
 
 
-        const maxDistance =
-          parseInt(range.value);
+        // ======================================
+        // FILTRE DISTANCE
+        //
+        // 0  = Indre-et-Loire
+        //      uniquement les codes 37xxx
+        //
+        // 1  = 60 km
+        // 2  = 70 km
+        // ...
+        // 35 = 400 km
+        // 36 = France = 1500 km
+        // ======================================
+
+        const sliderValue =
+          parseInt(
+            range.value
+          );
+
+
+        let maxDistance = 60;
+
+        let indreEtLoire = false;
+
+
+        if(sliderValue === 0) {
+
+          indreEtLoire = true;
+
+          maxDistance = 60;
+
+        } else if(sliderValue === 36) {
+
+          maxDistance = 1500;
+
+        } else {
+
+          maxDistance =
+            50 + (sliderValue * 10);
+
+        }
+
+
+        const dateDebutRecherche =
+          dateDebutInput.value
+            ? convertirDate(
+                dateDebutInput.value
+              )
+            : null;
+
+
+        const dateFinRecherche =
+          dateFinInput.value
+            ? convertirDate(
+                dateFinInput.value
+              )
+            : null;
 
 
         const bounds =
           L.latLngBounds();
 
 
-        cards.forEach((card,i)=>{
+        cards.forEach(
+          (card,i)=>{
 
-          const cardDiscipline =
-            card.dataset.discipline;
-
-
-          const cardDistance =
-            parseFloat(
-              card.dataset.distance
-            );
+            const cardDiscipline =
+              card.dataset.discipline;
 
 
-          const show =
-            (
-              discipline === "" ||
-              discipline === cardDiscipline
-            )
-            &&
-            cardDistance <= maxDistance;
+            const cardDistance =
+              parseFloat(
+                card.dataset.distance
+              );
 
 
-          card.style.display =
-            show ? "block" : "none";
+            const cardCodePostal =
+              card.dataset.codePostal ||
+              "";
 
 
-          if(show){
+            const dateDebut =
+              convertirDate(
+                card.dataset.dateDebut
+              );
 
-            if(!map.hasLayer(markers[i])){
 
-              markers[i].addTo(map);
+            const dateFin =
+              convertirDate(
+                card.dataset.dateFin
+              );
+
+
+            // ==================================
+            // FILTRE DATE
+            // ==================================
+
+            let competitionActive =
+              true;
+
+
+            if(dateFin){
+
+              competitionActive =
+                dateFin >= aujourdHui;
 
             }
 
 
-            bounds.extend(
-              markers[i].getLatLng()
-            );
+            let correspondDate =
+              true;
 
 
-          } else {
+            if(
+              dateDebutRecherche &&
+              dateFinRecherche
+            ){
 
-            if(map.hasLayer(markers[i])){
+              correspondDate =
+                dateDebut &&
+                dateFin &&
+                dateDebut <= dateFinRecherche &&
+                dateFin >= dateDebutRecherche;
 
-              map.removeLayer(
-                markers[i]
+            } else if(
+              dateDebutRecherche
+            ){
+
+              correspondDate =
+                dateFin &&
+                dateFin >= dateDebutRecherche;
+
+            } else if(
+              dateFinRecherche
+            ){
+
+              correspondDate =
+                dateDebut &&
+                dateDebut <= dateFinRecherche;
+
+            }
+
+
+            // ==================================
+            // FILTRE INDRE-ET-LOIRE
+            // ==================================
+
+            let correspondDistance =
+              true;
+
+
+            if(indreEtLoire){
+
+              correspondDistance =
+                /^37\d{3}$/.test(
+                  cardCodePostal
+                );
+
+            } else {
+
+              correspondDistance =
+                cardDistance <= maxDistance;
+
+            }
+
+
+            // ==================================
+            // FILTRE GLOBAL
+            // ==================================
+
+            const show =
+              competitionActive
+              &&
+              correspondDate
+              &&
+              (
+                discipline === ""
+                ||
+                discipline === cardDiscipline
+              )
+              &&
+              correspondDistance;
+
+
+            card.style.display =
+              show
+                ? "block"
+                : "none";
+
+
+            if(show){
+
+              if(
+                !map.hasLayer(
+                  markers[i]
+                )
+              ){
+
+                markers[i].addTo(
+                  map
+                );
+
+              }
+
+
+              bounds.extend(
+                markers[i].getLatLng()
               );
+
+
+            } else {
+
+              if(
+                map.hasLayer(
+                  markers[i]
+                )
+              ){
+
+                map.removeLayer(
+                  markers[i]
+                );
+
+              }
 
             }
 
           }
-
-        });
+        );
 
 
         if(bounds.isValid()){
@@ -692,7 +1136,10 @@ document.addEventListener("DOMContentLoaded", function() {
           map.fitBounds(
             bounds,
             {
-              padding:[50,50]
+              padding:[
+                50,
+                50
+              ]
             }
           );
 
@@ -701,12 +1148,38 @@ document.addEventListener("DOMContentLoaded", function() {
       }
 
 
+      // ==========================================
+      // SLIDER DISTANCE
+      // ==========================================
+
       range.addEventListener(
         "input",
         ()=>{
 
-          value.textContent =
-            range.value;
+          const sliderValue =
+            parseInt(
+              range.value
+            );
+
+
+          if(sliderValue === 0){
+
+            value.textContent =
+              "Indre-et-Loire";
+
+          } else if(sliderValue === 36){
+
+            value.textContent =
+              "France";
+
+          } else {
+
+            value.textContent =
+              (50 + sliderValue * 10) +
+              " km";
+
+          }
+
 
           filterCards();
 
@@ -714,28 +1187,95 @@ document.addEventListener("DOMContentLoaded", function() {
       );
 
 
+      // ==========================================
+      // FILTRE DISCIPLINE
+      // ==========================================
+
       selectDiscipline.addEventListener(
         "change",
         filterCards
       );
 
 
+      // ==========================================
+      // FILTRE DATE DEBUT
+      // ==========================================
+
+      dateDebutInput.addEventListener(
+        "change",
+        ()=>{
+
+          filterCards();
+
+        }
+      );
+
+
+      // ==========================================
+      // FILTRE DATE FIN
+      // ==========================================
+
+      dateFinInput.addEventListener(
+        "change",
+        ()=>{
+
+          filterCards();
+
+        }
+      );
+
+
+      // ==========================================
+      // RÉINITIALISATION
+      // ==========================================
+
+      resetDates.addEventListener(
+        "click",
+        ()=>{
+
+          dateDebutInput.value = "";
+          dateFinInput.value = "";
+
+          range.value = 0;
+
+          value.textContent =
+            "Indre-et-Loire";
+
+          filterCards();
+
+        }
+      );
+
+
+      // ==========================================
+      // FILTRAGE INITIAL
+      // ==========================================
+
       filterCards();
 
     })
-    .catch(error => {
 
-      console.error(
-        "Erreur lors du chargement des compétitions :",
-        error
-      );
 
-      document.querySelector(
-        ".competitions-grid"
-      ).innerHTML =
-        "<p>Impossible de charger les compétitions.</p>";
+    // ==========================================
+    // ERREUR DE CHARGEMENT
+    // ==========================================
 
-    });
+    .catch(
+      error => {
+
+        console.error(
+          "Erreur lors du chargement des compétitions :",
+          error
+        );
+
+
+        document.querySelector(
+          ".competitions-grid"
+        ).innerHTML =
+          "<p>Impossible de charger les compétitions.</p>";
+
+      }
+    );
 
 });
 
