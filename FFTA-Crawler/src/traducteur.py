@@ -1,6 +1,7 @@
 import json
 import math
 from datetime import date
+from pathlib import Path
 
 import requests
 
@@ -34,10 +35,29 @@ DISCIPLINES_YAPLA = {
     "Loisir Confirmé": "Loisir"
 }
 
-# Fichiers
-FICHIER_ENTREE = "data/competitions.json"
-FICHIER_SORTIE_JSON = "data/competitions_traduites.json"
-FICHIER_SORTIE_HTML = "data/competitions_yapla.html"
+
+# ==========================================
+# CHEMINS DES FICHIERS
+# ==========================================
+
+# Le script se trouve dans :
+# FFTA-Competitions/FFTA-Crawler/src/traducteur.py
+
+BASE_DIR = Path(__file__).resolve().parents[1]
+REPO_DIR = BASE_DIR.parent
+
+FICHIER_ENTREE = BASE_DIR / "data" / "competitions.json"
+FICHIER_SORTIE_JSON = BASE_DIR / "data" / "competitions_traduites.json"
+FICHIER_SORTIE_HTML = BASE_DIR / "data" / "competitions_yapla.html"
+
+# JSON qui sera destiné à GitHub Pages
+FICHIER_PUBLIC = REPO_DIR / "competitions.json"
+
+# Adresse publique du JSON pour Yapla
+URL_JSON_PUBLIC = (
+    "https://ballawgd.github.io/"
+    "FFTA-Competitions/competitions.json"
+)
 
 
 # ==========================================
@@ -213,35 +233,18 @@ def geocoder_ville(ville):
 
 
 # ==========================================
-# ÉCHAPPEMENT JAVASCRIPT
-# ==========================================
-
-def echapper_js(texte):
-    """
-    Protège une chaîne de caractères avant de l'insérer
-    dans le JavaScript généré.
-    """
-
-    if texte is None:
-        return ""
-
-    return (
-        str(texte)
-        .replace("\\", "\\\\")
-        .replace('"', '\\"')
-        .replace("\r", "")
-        .replace("\n", " ")
-    )
-
-
-# ==========================================
 # FORMATAGE DES DATES
 # ==========================================
 
 def formater_dates(competition):
     """
     Transforme les dates YYYY-MM-DD du JSON en affichage
-    plus lisible pour Yapla.
+    lisible pour Yapla.
+
+    Exemples :
+        2026-12-11 → 11 décembre
+        2026-12-11 / 2026-12-12 → 11-12 décembre
+        2026-12-30 / 2027-01-02 → 30 décembre - 2 janvier
     """
 
     date_debut = competition.get("date_debut")
@@ -301,72 +304,17 @@ def formater_dates(competition):
 
 
 # ==========================================
-# GÉNÉRATION DU TABLEAU JAVASCRIPT
-# ==========================================
-
-def generer_donnees_javascript(competitions):
-    """
-    Transforme les compétitions en tableau JavaScript.
-    """
-
-    lignes = []
-
-    for competition in competitions:
-
-        nom = echapper_js(
-            competition.get("lieu") or
-            competition.get("nom") or
-            "Compétition"
-        )
-
-        dates = echapper_js(
-            formater_dates(competition)
-        )
-
-        type_yapla = DISCIPLINES_YAPLA.get(
-            competition.get("discipline"),
-            competition.get("discipline", "")
-        )
-
-        type_yapla = echapper_js(type_yapla)
-
-        distance = competition.get("distance_km", 0)
-
-        latitude = competition.get("latitude")
-        longitude = competition.get("longitude")
-
-        lien = echapper_js(
-            competition.get("lien", "")
-        )
-
-        ligne = (
-            f'{{ nom: "{nom}", '
-            f'dates: "{dates}", '
-            f'type: "{type_yapla}", '
-            f'distance: {distance}, '
-            f'lat: {latitude}, '
-            f'lng: {longitude}, '
-            f'lien: "{lien}" }}'
-        )
-
-        lignes.append(ligne)
-
-    return ",\n".join(lignes)
-
-
-# ==========================================
 # GÉNÉRATION DU HTML YAPLA
 # ==========================================
 
-def generer_html_yapla(competitions):
+def generer_html_yapla():
     """
     Génère le bloc HTML/CSS/JavaScript complet
     prêt à être copié dans Yapla.
-    """
 
-    donnees_js = generer_donnees_javascript(
-        competitions
-    )
+    Les compétitions sont chargées depuis le JSON
+    hébergé sur GitHub Pages.
+    """
 
     html = f'''<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
 <link crossorigin="" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" rel="stylesheet" />
@@ -644,416 +592,468 @@ input[type=range]::-webkit-slider-thumb {{
 
 document.addEventListener("DOMContentLoaded", function() {{
 
-  // ==================== DONNÉES ====================
+  // ==================== CHARGEMENT DES DONNÉES ====================
 
-  const competitions = [
-{donnees_js}
-  ];
+  fetch("{URL_JSON_PUBLIC}")
+    .then(response => {{
 
-
-  // ==================== DECALAGE DES POINTS IDENTIQUES ====================
-
-  const locationCounts = {{}};
-
-  competitions.forEach(comp => {{
-
-    const key = comp.lat + "," + comp.lng;
-
-    if(!locationCounts[key]) {{
-
-      locationCounts[key] = 0;
-
-    }} else {{
-
-      const offset = 0.0025 * locationCounts[key];
-
-      const angle =
-        locationCounts[key] * 45 * Math.PI / 180;
-
-      comp.lat += Math.sin(angle) * offset;
-      comp.lng += Math.cos(angle) * offset;
-
-    }}
-
-    locationCounts[key]++;
-
-  }});
-
-
-  // ==================== CARTE ====================
-
-  const map = L.map('map').setView([46.5, 2],6);
-
-  L.tileLayer(
-    'https://{{s}}.tile.openstreetmap.org/{{z}}/{{x}}/{{y}}.png',
-    {{
-      attribution:'&copy; OpenStreetMap contributors',
-      maxZoom:18
-    }}
-  ).addTo(map);
-
-
-  // ==================== COULEURS ====================
-
-  const typeColors = {{
-
-    "TAE":"blue",
-    "Campagne":"orange",
-    "3D":"green",
-    "Nature":"red",
-    "Beursault":"black",
-    "18m":"brown",
-    "Loisir":"purple"
-
-  }};
-
-
-  const markers = [];
-
-
-  // ==================== MARKERS ====================
-
-  competitions.forEach((comp,index)=>{{
-
-    const marker = L.circleMarker(
-      [comp.lat,comp.lng],
-      {{
-
-        radius:8,
-
-        fillColor:
-          typeColors[comp.type] || "gray",
-
-        color:"#fff",
-
-        weight:1,
-
-        opacity:1,
-
-        fillOpacity:0.9
-
+      if(!response.ok) {{
+        throw new Error(
+          "Erreur HTTP " + response.status
+        );
       }}
-    ).addTo(map);
 
+      return response.json();
 
-    // ==================== POPUP ====================
+    }})
+    .then(competitions => {{
 
-    marker.bindPopup(`
+      // ==================== DECALAGE DES POINTS IDENTIQUES ====================
 
-      <div style="text-align:center; font-family:Roboto,sans-serif;">
+      const locationCounts = {{}};
 
-        <strong style="color:#333870;">
-          ${{comp.nom}}
-        </strong>
+      competitions.forEach(comp => {{
 
-        <br>
+        const key = comp.lat + "," + comp.lng;
 
-        <span>
-          ${{comp.type}} - ${{comp.dates}}
-        </span>
+        if(!locationCounts[key]) {{
 
-        <br>
+          locationCounts[key] = 0;
 
-        <a
-          href="${{comp.lien}}"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="ffta-button"
-        >
-          Fiche FFTA
-        </a>
+        }} else {{
 
-      </div>
+          const offset =
+            0.0025 * locationCounts[key];
 
-    `);
+          const angle =
+            locationCounts[key] *
+            45 *
+            Math.PI /
+            180;
 
+          comp.lat +=
+            Math.sin(angle) *
+            offset;
 
-    marker.competitionIndex = index;
-
-
-    // ==================== SURVOL ====================
-
-    marker.on("mouseover", () => {{
-
-      marker.openPopup();
-
-      const color =
-        marker.options.fillColor || "gray";
-
-      const popupEl =
-        marker.getPopup().getElement();
-
-      if(popupEl){{
-
-        popupEl.style.border =
-          `3px solid ${{color}}`;
-
-        popupEl.style.borderRadius =
-          "15px";
-
-
-        const content =
-          popupEl.querySelector(
-            ".leaflet-popup-content"
-          );
-
-        if(content){{
-
-          content.style.fontFamily =
-            "Roboto, sans-serif";
-
-          content.style.fontSize =
-            "12px";
-
-          content.style.fontWeight =
-            "500";
-
-          content.style.color =
-            "#333870";
+          comp.lng +=
+            Math.cos(angle) *
+            offset;
 
         }}
 
-      }}
+        locationCounts[key]++;
 
-    }});
+      }});
 
 
-    // ==================== SORTIE DU POINT ====================
+      // ==================== CARTE ====================
 
-    marker.on("mouseout", () => {{
-
-      marker.closePopup();
-
-    }});
-
-
-    // ==================== CLIC SUR LE POINT ====================
-
-    marker.on("click", () => {{
-
-      const card =
-        document.querySelectorAll(
-          ".competition-card"
-        )[marker.competitionIndex];
-
-      if(card) {{
-
-        card.scrollIntoView({{
-          behavior:"smooth"
-        }});
-
-      }}
-
-    }});
-
-
-    markers.push(marker);
-
-  }});
-
-
-  // ==================== GENERATION DES CARDS ====================
-
-  const grid =
-    document.querySelector(
-      ".competitions-grid"
-    );
-
-
-  competitions.forEach(comp=>{{
-
-    const card =
-      document.createElement("div");
-
-
-    card.className =
-      `competition-card type-${{comp.type}}`;
-
-
-    card.dataset.discipline =
-      comp.type;
-
-
-    card.dataset.distance =
-      comp.distance;
-
-
-    let displayType = comp.type;
-
-
-    if(comp.type==="Beursault") {{
-
-      displayType = "B";
-
-    }} else if(comp.type==="Campagne") {{
-
-      displayType = "C";
-
-    }} else if(comp.type==="18m") {{
-
-      displayType = "18m";
-
-    }} else if(comp.type==="Loisir") {{
-
-      displayType = "Loisir";
-
-    }}
-
-
-    card.innerHTML = `
-
-      <h3 class="competition-title">
-        ${{comp.nom}}
-      </h3>
-
-      <span class="type type-${{comp.type}}">
-        ${{displayType}}
-      </span>
-
-      <div class="distance">
-        ${{comp.distance}} km
-      </div>
-
-      <div class="dates">
-        ${{comp.dates}}
-      </div>
-
-      <a
-        href="${{comp.lien}}"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="ffta-button"
-      >
-        Voir la fiche FFTA
-      </a>
-
-    `;
-
-
-    grid.appendChild(card);
-
-  }});
-
-
-  // ==================== FILTRAGE ====================
-
-  const selectDiscipline =
-    document.getElementById(
-      "discipline"
-    );
-
-  const range =
-    document.getElementById(
-      "distanceRange"
-    );
-
-  const value =
-    document.getElementById(
-      "distanceValue"
-    );
-
-  const cards =
-    document.querySelectorAll(
-      ".competition-card"
-    );
-
-
-  function filterCards() {{
-
-    const discipline =
-      selectDiscipline.value;
-
-    const maxDistance =
-      parseInt(range.value);
-
-
-    const bounds =
-      L.latLngBounds();
-
-
-    cards.forEach((card,i)=>{{
-
-      const cardDiscipline =
-        card.dataset.discipline;
-
-      const cardDistance =
-        parseInt(card.dataset.distance);
-
-
-      const show =
-        (
-          discipline === "" ||
-          discipline === cardDiscipline
-        )
-        &&
-        cardDistance <= maxDistance;
-
-
-      card.style.display =
-        show ? "block" : "none";
-
-
-      if(show){{
-
-        if(!map.hasLayer(markers[i])){{
-
-          markers[i].addTo(map);
-
-        }}
-
-
-        bounds.extend(
-          markers[i].getLatLng()
+      const map =
+        L.map('map').setView(
+          [46.5, 2],
+          6
         );
 
 
-      }} else {{
+      L.tileLayer(
+        'https://{{s}}.tile.openstreetmap.org/{{z}}/{{x}}/{{y}}.png',
+        {{
+          attribution:
+            '&copy; OpenStreetMap contributors',
+          maxZoom:18
+        }}
+      ).addTo(map);
 
-        if(map.hasLayer(markers[i])){{
 
-          map.removeLayer(markers[i]);
+      // ==================== COULEURS ====================
+
+      const typeColors = {{
+
+        "TAE":"blue",
+        "Campagne":"orange",
+        "3D":"green",
+        "Nature":"red",
+        "Beursault":"black",
+        "18m":"brown",
+        "Loisir":"purple"
+
+      }};
+
+
+      const markers = [];
+
+
+      // ==================== MARKERS ====================
+
+      competitions.forEach((comp,index)=>{{
+
+        const marker =
+          L.circleMarker(
+            [comp.lat,comp.lng],
+            {{
+
+              radius:8,
+
+              fillColor:
+                typeColors[comp.type] ||
+                "gray",
+
+              color:"#fff",
+
+              weight:1,
+
+              opacity:1,
+
+              fillOpacity:0.9
+
+            }}
+          ).addTo(map);
+
+
+        // ==================== POPUP ====================
+
+        marker.bindPopup(`
+
+          <div style="text-align:center; font-family:Roboto,sans-serif;">
+
+            <strong style="color:#333870;">
+              ${{comp.nom}}
+            </strong>
+
+            <br>
+
+            <span>
+              ${{comp.type}} - ${{comp.dates}}
+            </span>
+
+            <br>
+
+            <a
+              href="${{comp.lien}}"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="ffta-button"
+            >
+              Fiche FFTA
+            </a>
+
+          </div>
+
+        `);
+
+
+        marker.competitionIndex = index;
+
+
+        // ==================== SURVOL ====================
+
+        marker.on("mouseover", () => {{
+
+          marker.openPopup();
+
+          const color =
+            marker.options.fillColor ||
+            "gray";
+
+          const popupEl =
+            marker.getPopup().getElement();
+
+          if(popupEl){{
+
+            popupEl.style.border =
+              `3px solid ${{color}}`;
+
+            popupEl.style.borderRadius =
+              "15px";
+
+
+            const content =
+              popupEl.querySelector(
+                ".leaflet-popup-content"
+              );
+
+            if(content){{
+
+              content.style.fontFamily =
+                "Roboto, sans-serif";
+
+              content.style.fontSize =
+                "12px";
+
+              content.style.fontWeight =
+                "500";
+
+              content.style.color =
+                "#333870";
+
+            }}
+
+          }}
+
+        }});
+
+
+        // ==================== SORTIE DU POINT ====================
+
+        marker.on("mouseout", () => {{
+
+          marker.closePopup();
+
+        }});
+
+
+        // ==================== CLIC SUR LE POINT ====================
+
+        marker.on("click", () => {{
+
+          const card =
+            document.querySelectorAll(
+              ".competition-card"
+            )[marker.competitionIndex];
+
+          if(card) {{
+
+            card.scrollIntoView({{
+              behavior:"smooth"
+            }});
+
+          }}
+
+        }});
+
+
+        markers.push(marker);
+
+      }});
+
+
+      // ==================== GENERATION DES CARDS ====================
+
+      const grid =
+        document.querySelector(
+          ".competitions-grid"
+        );
+
+
+      competitions.forEach(comp=>{{
+
+        const card =
+          document.createElement("div");
+
+
+        card.className =
+          `competition-card type-${{comp.type}}`;
+
+
+        card.dataset.discipline =
+          comp.type;
+
+
+        card.dataset.distance =
+          comp.distance;
+
+
+        let displayType =
+          comp.type;
+
+
+        if(comp.type==="Beursault") {{
+
+          displayType = "B";
+
+        }} else if(comp.type==="Campagne") {{
+
+          displayType = "C";
+
+        }} else if(comp.type==="18m") {{
+
+          displayType = "18m";
+
+        }} else if(comp.type==="Loisir") {{
+
+          displayType = "Loisir";
+
+        }}
+
+
+        card.innerHTML = `
+
+          <h3 class="competition-title">
+            ${{comp.nom}}
+          </h3>
+
+          <span class="type type-${{comp.type}}">
+            ${{displayType}}
+          </span>
+
+          <div class="distance">
+            ${{comp.distance}} km
+          </div>
+
+          <div class="dates">
+            ${{comp.dates}}
+          </div>
+
+          <a
+            href="${{comp.lien}}"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="ffta-button"
+          >
+            Voir la fiche FFTA
+          </a>
+
+        `;
+
+
+        grid.appendChild(card);
+
+      }});
+
+
+      // ==================== FILTRAGE ====================
+
+      const selectDiscipline =
+        document.getElementById(
+          "discipline"
+        );
+
+
+      const range =
+        document.getElementById(
+          "distanceRange"
+        );
+
+
+      const value =
+        document.getElementById(
+          "distanceValue"
+        );
+
+
+      const cards =
+        document.querySelectorAll(
+          ".competition-card"
+        );
+
+
+      function filterCards() {{
+
+        const discipline =
+          selectDiscipline.value;
+
+
+        const maxDistance =
+          parseInt(range.value);
+
+
+        const bounds =
+          L.latLngBounds();
+
+
+        cards.forEach((card,i)=>{{
+
+          const cardDiscipline =
+            card.dataset.discipline;
+
+
+          const cardDistance =
+            parseFloat(
+              card.dataset.distance
+            );
+
+
+          const show =
+            (
+              discipline === "" ||
+              discipline === cardDiscipline
+            )
+            &&
+            cardDistance <= maxDistance;
+
+
+          card.style.display =
+            show ? "block" : "none";
+
+
+          if(show){{
+
+            if(!map.hasLayer(markers[i])){{
+
+              markers[i].addTo(map);
+
+            }}
+
+
+            bounds.extend(
+              markers[i].getLatLng()
+            );
+
+
+          }} else {{
+
+            if(map.hasLayer(markers[i])){{
+
+              map.removeLayer(
+                markers[i]
+              );
+
+            }}
+
+          }}
+
+        }});
+
+
+        if(bounds.isValid()){{
+
+          map.fitBounds(
+            bounds,
+            {{
+              padding:[50,50]
+            }}
+          );
 
         }}
 
       }}
 
-    }});
 
+      range.addEventListener(
+        "input",
+        ()=>{{
 
-    if(bounds.isValid()){{
+          value.textContent =
+            range.value;
 
-      map.fitBounds(
-        bounds,
-        {{
-          padding:[50,50]
+          filterCards();
+
         }}
       );
 
-    }}
 
-  }}
+      selectDiscipline.addEventListener(
+        "change",
+        filterCards
+      );
 
-
-  range.addEventListener(
-    "input",
-    ()=>{{
-
-      value.textContent =
-        range.value;
 
       filterCards();
 
-    }}
-  );
+    }})
+    .catch(error => {{
 
+      console.error(
+        "Erreur lors du chargement des compétitions :",
+        error
+      );
 
-  selectDiscipline.addEventListener(
-    "change",
-    filterCards
-  );
+      document.querySelector(
+        ".competitions-grid"
+      ).innerHTML =
+        "<p>Impossible de charger les compétitions.</p>";
 
-
-  filterCards();
+    }});
 
 }});
 
@@ -1324,36 +1324,46 @@ for competition in competitions:
 
 
     # ==========================================
-    # NOUVELLE COMPÉTITION
+    # NOM
     # ==========================================
 
-    competition_traduite = competition.copy()
+    nom = (
+        competition.get("lieu")
+        or competition.get("nom")
+        or "Compétition"
+    )
+
+    nom = normaliser_texte(nom)
 
 
-    # Code postal
-    competition_traduite["code_postal"] = (
-        code_postal
+    # ==========================================
+    # TYPE YAPLA
+    # ==========================================
+
+    type_yapla = DISCIPLINES_YAPLA.get(
+        discipline,
+        discipline
     )
 
 
-    # Distance
-    competition_traduite["distance_km"] = (
-        distance
-    )
+    # ==========================================
+    # DONNÉES YAPLA
+    # ==========================================
+    #
+    # IMPORTANT :
+    # Le JSON traduit contient UNIQUEMENT
+    # ces 7 informations.
+    #
 
-
-    # Coordonnées GPS
-    competition_traduite["latitude"] = (
-        localisation["latitude"]
-    )
-
-    competition_traduite["longitude"] = (
-        localisation["longitude"]
-    )
-
-
-    # Lien FFTA
-    competition_traduite["lien"] = lien
+    competition_traduite = {
+        "nom": nom,
+        "dates": formater_dates(competition),
+        "type": type_yapla,
+        "distance": distance,
+        "lat": localisation["latitude"],
+        "lng": localisation["longitude"],
+        "lien": lien
+    }
 
 
     competitions_traduites.append(
@@ -1371,7 +1381,7 @@ for competition in competitions:
 
 
 # ==========================================
-# SAUVEGARDE DU JSON
+# SAUVEGARDE DU JSON TRADUIT
 # ==========================================
 
 with open(
@@ -1384,8 +1394,40 @@ with open(
         competitions_traduites,
         file,
         ensure_ascii=False,
-        indent=4
+        indent=2
     )
+
+
+print()
+
+print(
+    f"✅ JSON traduit créé dans "
+    f"{FICHIER_SORTIE_JSON}"
+)
+
+
+# ==========================================
+# COPIE DU JSON POUR GITHUB PAGES
+# ==========================================
+
+with open(
+    FICHIER_PUBLIC,
+    "w",
+    encoding="utf-8"
+) as file:
+
+    json.dump(
+        competitions_traduites,
+        file,
+        ensure_ascii=False,
+        indent=2
+    )
+
+
+print(
+    f"✅ JSON public créé dans "
+    f"{FICHIER_PUBLIC}"
+)
 
 
 # ==========================================
@@ -1398,9 +1440,7 @@ print(
     "Génération du bloc Yapla..."
 )
 
-html_yapla = generer_html_yapla(
-    competitions_traduites
-)
+html_yapla = generer_html_yapla()
 
 
 with open(
@@ -1469,11 +1509,16 @@ print(
 print()
 
 print(
-    f"JSON créé dans "
+    f"JSON traduit : "
     f"{FICHIER_SORTIE_JSON}"
 )
 
 print(
-    f"HTML Yapla créé dans "
+    f"JSON public : "
+    f"{FICHIER_PUBLIC}"
+)
+
+print(
+    f"HTML Yapla : "
     f"{FICHIER_SORTIE_HTML}"
 )
