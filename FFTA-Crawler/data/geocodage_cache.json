@@ -4038,5 +4038,109 @@
   "BULLY LES MINES": {
     "latitude": 50.4464,
     "longitude": 2.71989
+  },
+  "BRIENNE LE CHATEAU": {
+    "latitude": 48.3941801,
+    "longitude": 4.5268522
+  },
+  "CHAUMONT": {
+    "latitude": 48.1111324,
+    "longitude": 5.1395849
+  },
+  "ROMILLY SUR SEINE": {
+    "latitude": 48.5197475,
+    "longitude": 3.7263678
+  },
+  "SAINT DIÉ DES VOSGES": {
+    "latitude": 48.2872305,
+    "longitude": 6.9474449
+  },
+  "LUSIGNY-SUR-BARSE": {
+    "latitude": 48.2550945,
+    "longitude": 4.2686395
+  },
+  "RIVES": {
+    "latitude": 45.3501289,
+    "longitude": 5.5047411
+  },
+  "LYON": {
+    "latitude": 45.7578137,
+    "longitude": 4.8320114
+  },
+  "BOURBON L ARCHAMBAULT": {
+    "latitude": 46.5857669,
+    "longitude": 3.05804
+  },
+  "VOIRON": {
+    "latitude": 45.3631386,
+    "longitude": 5.5910751
+  },
+  "MOIRANS": {
+    "latitude": 45.3262643,
+    "longitude": 5.5647186
+  },
+  "SAINT ETIENNE": {
+    "latitude": 45.4401467,
+    "longitude": 4.3873058
+  },
+  "SAINT POURCAIN SUR SIOULE": {
+    "latitude": 46.3074423,
+    "longitude": 3.2899107
+  },
+  "CHATEAUNEUF DU RHONE": {
+    "latitude": 44.4908219,
+    "longitude": 4.719065
+  },
+  "ST PRIEST": {
+    "latitude": 44.7177,
+    "longitude": 4.54685
+  },
+  "VICHY": {
+    "latitude": 46.124017,
+    "longitude": 3.4203658
+  },
+  "L'ISLE D'ABEAU": {
+    "latitude": 45.6230017,
+    "longitude": 5.2298398
+  },
+  "SAINT-PAUL-TROIS-CHÂTEAUX": {
+    "latitude": 44.3475554,
+    "longitude": 4.7707325
+  },
+  "SASSENAGE": {
+    "latitude": 45.2066503,
+    "longitude": 5.6630254
+  },
+  "LURCY-LEVIS": {
+    "latitude": 46.732376,
+    "longitude": 2.9378711
+  },
+  "VILLEFRANCHE D'ALLIER": {
+    "latitude": 46.3970933,
+    "longitude": 2.8566399
+  },
+  "VILLEFONTAINE": {
+    "latitude": 45.614003,
+    "longitude": 5.1580574
+  },
+  "BRUNSTATT": {
+    "latitude": 47.7165607,
+    "longitude": 7.3294114
+  },
+  "MONTLOUIS SUR LOIRE": {
+    "latitude": 47.3881023,
+    "longitude": 0.8269289
+  },
+  "CHATEAURENARD": {
+    "latitude": 43.8820448,
+    "longitude": 4.85568
+  },
+  "GROSBREUIL": {
+    "latitude": 46.5397222,
+    "longitude": -1.6169444
+  },
+  "AMFREVILLE LA MI VOIE": {
+    "latitude": 49.4068,
+    "longitude": 1.12356
   }
 }

@@ -2424,6 +2424,18 @@
     "date_fin": "2026-10-18"
   },
   {
+    "nom": "BRIENNE LE CHATEAU",
+    "dates": "17-18 octobre",
+    "type": "Para-18m",
+    "distance": 307.2,
+    "lat": 48.3941801,
+    "lng": 4.5268522,
+    "lien": "https://www.ffta.fr/epreuve/27295",
+    "code_postal": null,
+    "date_debut": "2026-10-17",
+    "date_fin": "2026-10-18"
+  },
+  {
     "nom": "CHAUMONT",
     "dates": "17-18 octobre",
     "type": "18m",
@@ -2432,6 +2444,18 @@
     "lng": 5.1330802,
     "lien": "https://www.ffta.fr/epreuve/27296",
     "code_postal": "52000",
+    "date_debut": "2026-10-17",
+    "date_fin": "2026-10-18"
+  },
+  {
+    "nom": "CHAUMONT",
+    "dates": "17-18 octobre",
+    "type": "Para-18m",
+    "distance": 342.3,
+    "lat": 48.1111324,
+    "lng": 5.1395849,
+    "lien": "https://www.ffta.fr/epreuve/27297",
+    "code_postal": null,
     "date_debut": "2026-10-17",
     "date_fin": "2026-10-18"
   },
@@ -3312,6 +3336,18 @@
     "date_fin": "2026-10-25"
   },
   {
+    "nom": "ROMILLY SUR SEINE",
+    "dates": "24-25 octobre",
+    "type": "Para-18m",
+    "distance": 258.9,
+    "lat": 48.5197475,
+    "lng": 3.7263678,
+    "lien": "https://www.ffta.fr/epreuve/27302",
+    "code_postal": null,
+    "date_debut": "2026-10-24",
+    "date_fin": "2026-10-25"
+  },
+  {
     "nom": "FOLSCHVILLER",
     "dates": "24-25 octobre",
     "type": "18m",
@@ -3332,6 +3368,18 @@
     "lng": 6.9445816,
     "lien": "https://www.ffta.fr/epreuve/27304",
     "code_postal": "88100",
+    "date_debut": "2026-10-24",
+    "date_fin": "2026-10-25"
+  },
+  {
+    "nom": "SAINT DIÉ DES VOSGES",
+    "dates": "24-25 octobre",
+    "type": "Para-18m",
+    "distance": 477.5,
+    "lat": 48.2872305,
+    "lng": 6.9474449,
+    "lien": "https://www.ffta.fr/epreuve/27305",
+    "code_postal": null,
     "date_debut": "2026-10-24",
     "date_fin": "2026-10-25"
   },
@@ -4116,6 +4164,18 @@
     "date_fin": "2026-11-01"
   },
   {
+    "nom": "LUSIGNY-SUR-BARSE",
+    "dates": "31 octobre - 1 novembre",
+    "type": "Para-18m",
+    "distance": 284.1,
+    "lat": 48.2550945,
+    "lng": 4.2686395,
+    "lien": "https://www.ffta.fr/epreuve/27308",
+    "code_postal": null,
+    "date_debut": "2026-10-31",
+    "date_fin": "2026-11-01"
+  },
+  {
     "nom": "OBERNAI",
     "dates": "31 octobre - 1 novembre",
     "type": "18m",
@@ -4196,6 +4256,18 @@
     "lng": -2.9722288,
     "lien": "https://www.ffta.fr/epreuve/27733",
     "code_postal": "56400",
+    "date_debut": "2026-10-31",
+    "date_fin": "2026-11-01"
+  },
+  {
+    "nom": "AMFREVILLE LA MI VOIE",
+    "dates": "31 octobre - 1 novembre",
+    "type": "Para-18m",
+    "distance": 227.1,
+    "lat": 49.4068,
+    "lng": 1.12356,
+    "lien": "https://www.ffta.fr/epreuve/27776",
+    "code_postal": null,
     "date_debut": "2026-10-31",
     "date_fin": "2026-11-01"
   },
@@ -5264,6 +5336,18 @@
     "lng": 2.8464181,
     "lien": "https://www.ffta.fr/epreuve/27475",
     "code_postal": "03430",
+    "date_debut": "2026-11-07",
+    "date_fin": "2026-11-08"
+  },
+  {
+    "nom": "CHATEAURENARD",
+    "dates": "7-8 novembre",
+    "type": "Para-18m",
+    "distance": 506.4,
+    "lat": 43.8820448,
+    "lng": 4.85568,
+    "lien": "https://www.ffta.fr/epreuve/27682",
+    "code_postal": null,
     "date_debut": "2026-11-07",
     "date_fin": "2026-11-08"
   },
@@ -7862,6 +7946,18 @@
   {
     "nom": "VILLEFONTAINE",
     "dates": "21-22 novembre",
+    "type": "Para-18m",
+    "distance": 394.5,
+    "lat": 45.614003,
+    "lng": 5.1580574,
+    "lien": "https://www.ffta.fr/epreuve/27635",
+    "code_postal": null,
+    "date_debut": "2026-11-21",
+    "date_fin": "2026-11-22"
+  },
+  {
+    "nom": "VILLEFONTAINE",
+    "dates": "21-22 novembre",
     "type": "18m",
     "distance": 395.2,
     "lat": 45.5958149,
@@ -9120,6 +9216,18 @@
     "date_fin": "2026-11-29"
   },
   {
+    "nom": "RIVES",
+    "dates": "28-29 novembre",
+    "type": "Para-18m",
+    "distance": 433.0,
+    "lat": 45.3501289,
+    "lng": 5.5047411,
+    "lien": "https://www.ffta.fr/epreuve/27515",
+    "code_postal": null,
+    "date_debut": "2026-11-28",
+    "date_fin": "2026-11-29"
+  },
+  {
     "nom": "GYMNASE DES MARQUISATS - ANNECY",
     "dates": "28-29 novembre",
     "type": "18m",
@@ -9192,6 +9300,18 @@
     "date_fin": "2026-11-29"
   },
   {
+    "nom": "LYON",
+    "dates": "28-29 novembre",
+    "type": "Para-18m",
+    "distance": 364.6,
+    "lat": 45.7578137,
+    "lng": 4.8320114,
+    "lien": "https://www.ffta.fr/epreuve/27522",
+    "code_postal": null,
+    "date_debut": "2026-11-28",
+    "date_fin": "2026-11-29"
+  },
+  {
     "nom": "ANTONY",
     "dates": "28-29 novembre",
     "type": "18m",
@@ -9212,6 +9332,18 @@
     "lng": 7.3168676,
     "lien": "https://www.ffta.fr/epreuve/27663",
     "code_postal": "68350",
+    "date_debut": "2026-11-28",
+    "date_fin": "2026-11-28"
+  },
+  {
+    "nom": "BRUNSTATT",
+    "dates": "28 novembre",
+    "type": "Para-18m",
+    "distance": 499.5,
+    "lat": 47.7165607,
+    "lng": 7.3294114,
+    "lien": "https://www.ffta.fr/epreuve/27664",
+    "code_postal": null,
     "date_debut": "2026-11-28",
     "date_fin": "2026-11-28"
   },
@@ -9392,6 +9524,18 @@
     "lng": 7.3168676,
     "lien": "https://www.ffta.fr/epreuve/27665",
     "code_postal": "68350",
+    "date_debut": "2026-11-29",
+    "date_fin": "2026-11-29"
+  },
+  {
+    "nom": "BRUNSTATT",
+    "dates": "29 novembre",
+    "type": "Para-18m",
+    "distance": 499.5,
+    "lat": 47.7165607,
+    "lng": 7.3294114,
+    "lien": "https://www.ffta.fr/epreuve/27666",
+    "code_postal": null,
     "date_debut": "2026-11-29",
     "date_fin": "2026-11-29"
   },
@@ -10368,6 +10512,18 @@
     "date_fin": "2026-12-06"
   },
   {
+    "nom": "ROMILLY SUR SEINE",
+    "dates": "5-6 décembre",
+    "type": "Para-18m",
+    "distance": 258.9,
+    "lat": 48.5197475,
+    "lng": 3.7263678,
+    "lien": "https://www.ffta.fr/epreuve/27359",
+    "code_postal": null,
+    "date_debut": "2026-12-05",
+    "date_fin": "2026-12-06"
+  },
+  {
     "nom": "DIEUZE",
     "dates": "5-6 décembre",
     "type": "18m",
@@ -10412,6 +10568,18 @@
     "lng": 3.0193387,
     "lien": "https://www.ffta.fr/epreuve/27523",
     "code_postal": "03160",
+    "date_debut": "2026-12-05",
+    "date_fin": "2026-12-06"
+  },
+  {
+    "nom": "BOURBON L ARCHAMBAULT",
+    "dates": "5-6 décembre",
+    "type": "Para-18m",
+    "distance": 200.4,
+    "lat": 46.5857669,
+    "lng": 3.05804,
+    "lien": "https://www.ffta.fr/epreuve/27524",
+    "code_postal": null,
     "date_debut": "2026-12-05",
     "date_fin": "2026-12-06"
   },
@@ -10536,6 +10704,18 @@
     "date_fin": "2026-12-06"
   },
   {
+    "nom": "VOIRON",
+    "dates": "5-6 décembre",
+    "type": "Para-18m",
+    "distance": 437.9,
+    "lat": 45.3631386,
+    "lng": 5.5910751,
+    "lien": "https://www.ffta.fr/epreuve/27535",
+    "code_postal": null,
+    "date_debut": "2026-12-05",
+    "date_fin": "2026-12-06"
+  },
+  {
     "nom": "LANNION",
     "dates": "5-6 décembre",
     "type": "18m",
@@ -10568,6 +10748,18 @@
     "lng": 0.8601576,
     "lien": "https://www.ffta.fr/epreuve/27671",
     "code_postal": "37270",
+    "date_debut": "2026-12-05",
+    "date_fin": "2026-12-06"
+  },
+  {
+    "nom": "MONTLOUIS SUR LOIRE",
+    "dates": "5-6 décembre",
+    "type": "Para-18m",
+    "distance": 10.3,
+    "lat": 47.3881023,
+    "lng": 0.8269289,
+    "lien": "https://www.ffta.fr/epreuve/27672",
+    "code_postal": null,
     "date_debut": "2026-12-05",
     "date_fin": "2026-12-06"
   },
@@ -11784,6 +11976,18 @@
     "date_fin": "2026-12-13"
   },
   {
+    "nom": "MOIRANS",
+    "dates": "12-13 décembre",
+    "type": "Para-18m",
+    "distance": 438.4,
+    "lat": 45.3262643,
+    "lng": 5.5647186,
+    "lien": "https://www.ffta.fr/epreuve/27539",
+    "code_postal": null,
+    "date_debut": "2026-12-12",
+    "date_fin": "2026-12-13"
+  },
+  {
     "nom": "VILLEFRANCHE SUR SAONE",
     "dates": "12-13 décembre",
     "type": "18m",
@@ -11816,6 +12020,18 @@
     "lng": 4.4310972,
     "lien": "https://www.ffta.fr/epreuve/27542",
     "code_postal": "42100",
+    "date_debut": "2026-12-12",
+    "date_fin": "2026-12-13"
+  },
+  {
+    "nom": "SAINT ETIENNE",
+    "dates": "12-13 décembre",
+    "type": "Para-18m",
+    "distance": 356.4,
+    "lat": 45.4401467,
+    "lng": 4.3873058,
+    "lien": "https://www.ffta.fr/epreuve/27543",
+    "code_postal": null,
     "date_debut": "2026-12-12",
     "date_fin": "2026-12-13"
   },
@@ -11864,6 +12080,18 @@
     "lng": -1.588137,
     "lien": "https://www.ffta.fr/epreuve/27722",
     "code_postal": "85440",
+    "date_debut": "2026-12-12",
+    "date_fin": "2026-12-13"
+  },
+  {
+    "nom": "GROSBREUIL",
+    "dates": "12-13 décembre",
+    "type": "Para-18m",
+    "distance": 198.7,
+    "lat": 46.5397222,
+    "lng": -1.6169444,
+    "lien": "https://www.ffta.fr/epreuve/27723",
+    "code_postal": null,
     "date_debut": "2026-12-12",
     "date_fin": "2026-12-13"
   },
@@ -12840,6 +13068,18 @@
     "date_fin": "2026-12-20"
   },
   {
+    "nom": "SAINT POURCAIN SUR SIOULE",
+    "dates": "19-20 décembre",
+    "type": "Para-18m",
+    "distance": 231.1,
+    "lat": 46.3074423,
+    "lng": 3.2899107,
+    "lien": "https://www.ffta.fr/epreuve/27552",
+    "code_postal": null,
+    "date_debut": "2026-12-19",
+    "date_fin": "2026-12-20"
+  },
+  {
     "nom": "CHATEAUNEUF DU RHONE",
     "dates": "19-20 décembre",
     "type": "18m",
@@ -12848,6 +13088,18 @@
     "lng": 4.7674329,
     "lien": "https://www.ffta.fr/epreuve/27553",
     "code_postal": "26780",
+    "date_debut": "2026-12-19",
+    "date_fin": "2026-12-20"
+  },
+  {
+    "nom": "CHATEAUNEUF DU RHONE",
+    "dates": "19-20 décembre",
+    "type": "Para-18m",
+    "distance": 447.8,
+    "lat": 44.4908219,
+    "lng": 4.719065,
+    "lien": "https://www.ffta.fr/epreuve/27554",
+    "code_postal": null,
     "date_debut": "2026-12-19",
     "date_fin": "2026-12-20"
   },
@@ -14508,6 +14760,18 @@
     "date_fin": "2027-01-10"
   },
   {
+    "nom": "ST PRIEST",
+    "dates": "9-10 janvier",
+    "type": "Para-18m",
+    "distance": 420.0,
+    "lat": 44.7177,
+    "lng": 4.54685,
+    "lien": "https://www.ffta.fr/epreuve/27559",
+    "code_postal": null,
+    "date_debut": "2027-01-09",
+    "date_fin": "2027-01-10"
+  },
+  {
     "nom": "CHAMALIERES",
     "dates": "9-10 janvier",
     "type": "18m",
@@ -14528,6 +14792,18 @@
     "lng": 3.4540561,
     "lien": "https://www.ffta.fr/epreuve/27561",
     "code_postal": "03200",
+    "date_debut": "2027-01-09",
+    "date_fin": "2027-01-10"
+  },
+  {
+    "nom": "VICHY",
+    "dates": "9-10 janvier",
+    "type": "Para-18m",
+    "distance": 250.8,
+    "lat": 46.124017,
+    "lng": 3.4203658,
+    "lien": "https://www.ffta.fr/epreuve/27562",
+    "code_postal": null,
     "date_debut": "2027-01-09",
     "date_fin": "2027-01-10"
   },
@@ -14888,6 +15164,18 @@
     "lng": 7.3168676,
     "lien": "https://www.ffta.fr/epreuve/27667",
     "code_postal": "68350",
+    "date_debut": "2027-01-10",
+    "date_fin": "2027-01-10"
+  },
+  {
+    "nom": "BRUNSTATT",
+    "dates": "10 janvier",
+    "type": "Para-18m",
+    "distance": 499.5,
+    "lat": 47.7165607,
+    "lng": 7.3294114,
+    "lien": "https://www.ffta.fr/epreuve/27668",
+    "code_postal": null,
     "date_debut": "2027-01-10",
     "date_fin": "2027-01-10"
   },
@@ -15884,6 +16172,18 @@
     "lng": 5.2229083,
     "lien": "https://www.ffta.fr/epreuve/27573",
     "code_postal": "38080",
+    "date_debut": "2027-01-16",
+    "date_fin": "2027-01-17"
+  },
+  {
+    "nom": "L'ISLE D'ABEAU",
+    "dates": "16-17 janvier",
+    "type": "Para-18m",
+    "distance": 398.8,
+    "lat": 45.6230017,
+    "lng": 5.2298398,
+    "lien": "https://www.ffta.fr/epreuve/27574",
+    "code_postal": null,
     "date_debut": "2027-01-16",
     "date_fin": "2027-01-17"
   },
@@ -17112,6 +17412,18 @@
     "date_fin": "2027-01-24"
   },
   {
+    "nom": "ROMILLY SUR SEINE",
+    "dates": "23-24 janvier",
+    "type": "Para-18m",
+    "distance": 258.9,
+    "lat": 48.5197475,
+    "lng": 3.7263678,
+    "lien": "https://www.ffta.fr/epreuve/27414",
+    "code_postal": null,
+    "date_debut": "2027-01-23",
+    "date_fin": "2027-01-24"
+  },
+  {
     "nom": "SAINT-PAUL-TROIS-CHÂTEAUX",
     "dates": "23-24 janvier",
     "type": "18m",
@@ -17120,6 +17432,18 @@
     "lng": 4.8049262,
     "lien": "https://www.ffta.fr/epreuve/27578",
     "code_postal": "26130",
+    "date_debut": "2027-01-23",
+    "date_fin": "2027-01-24"
+  },
+  {
+    "nom": "SAINT-PAUL-TROIS-CHÂTEAUX",
+    "dates": "23-24 janvier",
+    "type": "Para-18m",
+    "distance": 462.3,
+    "lat": 44.3475554,
+    "lng": 4.7707325,
+    "lien": "https://www.ffta.fr/epreuve/27579",
+    "code_postal": null,
     "date_debut": "2027-01-23",
     "date_fin": "2027-01-24"
   },
@@ -17144,6 +17468,18 @@
     "lng": 5.6235157,
     "lien": "https://www.ffta.fr/epreuve/27581",
     "code_postal": "38360",
+    "date_debut": "2027-01-23",
+    "date_fin": "2027-01-24"
+  },
+  {
+    "nom": "SASSENAGE",
+    "dates": "23-24 janvier",
+    "type": "Para-18m",
+    "distance": 452.2,
+    "lat": 45.2066503,
+    "lng": 5.6630254,
+    "lien": "https://www.ffta.fr/epreuve/27582",
+    "code_postal": null,
     "date_debut": "2027-01-23",
     "date_fin": "2027-01-24"
   },
@@ -18012,6 +18348,18 @@
     "date_fin": "2027-01-31"
   },
   {
+    "nom": "RIVES",
+    "dates": "30-31 janvier",
+    "type": "Para-18m",
+    "distance": 433.0,
+    "lat": 45.3501289,
+    "lng": 5.5047411,
+    "lien": "https://www.ffta.fr/epreuve/27591",
+    "code_postal": null,
+    "date_debut": "2027-01-30",
+    "date_fin": "2027-01-31"
+  },
+  {
     "nom": "ALBERTVILLE",
     "dates": "30-31 janvier",
     "type": "18m",
@@ -18336,6 +18684,18 @@
     "date_fin": "2027-01-31"
   },
   {
+    "nom": "LURCY-LEVIS",
+    "dates": "31 janvier",
+    "type": "Para-18m",
+    "distance": 185.0,
+    "lat": 46.732376,
+    "lng": 2.9378711,
+    "lien": "https://www.ffta.fr/epreuve/27600",
+    "code_postal": null,
+    "date_debut": "2027-01-31",
+    "date_fin": "2027-01-31"
+  },
+  {
     "nom": "LAILLÉ",
     "dates": "3 février",
     "type": "18m",
@@ -18608,6 +18968,18 @@
     "lng": 2.8464181,
     "lien": "https://www.ffta.fr/epreuve/27605",
     "code_postal": "03430",
+    "date_debut": "2027-02-06",
+    "date_fin": "2027-02-07"
+  },
+  {
+    "nom": "VILLEFRANCHE D'ALLIER",
+    "dates": "6-7 février",
+    "type": "Para-18m",
+    "distance": 197.9,
+    "lat": 46.3970933,
+    "lng": 2.8566399,
+    "lien": "https://www.ffta.fr/epreuve/27606",
+    "code_postal": null,
     "date_debut": "2027-02-06",
     "date_fin": "2027-02-07"
   },
