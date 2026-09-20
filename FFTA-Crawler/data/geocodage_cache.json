@@ -4142,5 +4142,41 @@
   "AMFREVILLE LA MI VOIE": {
     "latitude": 49.4068,
     "longitude": 1.12356
+  },
+  "OBERNAI": {
+    "latitude": 48.4623358,
+    "longitude": 7.4817123
+  },
+  "SEICHAMPS": {
+    "latitude": 48.7145001,
+    "longitude": 6.2611518
+  },
+  "AY CHAMPAGNE": {
+    "latitude": 49.0560444,
+    "longitude": 4.0151247
+  },
+  "SAINT-DIZIER": {
+    "latitude": 48.6371125,
+    "longitude": 4.9473513
+  },
+  "BAR SUR SEINE": {
+    "latitude": 48.1126529,
+    "longitude": 4.3759103
+  },
+  "THAON LES VOSGES": {
+    "latitude": 48.2494845,
+    "longitude": 6.4123612
+  },
+  "97490": {
+    "latitude": -20.9461713,
+    "longitude": 55.4773689
+  },
+  "62130": {
+    "latitude": 50.3777092,
+    "longitude": 2.3104561
+  },
+  "30380": {
+    "latitude": 44.0839031,
+    "longitude": 4.0762106
   }
 }
